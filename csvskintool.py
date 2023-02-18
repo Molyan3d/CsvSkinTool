@@ -1,15 +1,12 @@
 import csv
 import os
 
-# Step 1: Look for skins.csv and skin_confs.csv in the same folder
 cwd = os.getcwd()
 skins_file = os.path.join(cwd, "skins.csv")
 skin_confs_file = os.path.join(cwd, "skin_confs.csv")
-# Step #: Check if file exist
 if not os.path.isfile(skins_file) or not os.path.isfile(skin_confs_file):
     raise FileExistsError("Files not Found")
 
-# Step #: Read file and defining some variables for use in future
 with open(skins_file, mode='r', newline='') as file:
     skins_content = [row for row in csv.reader(file)]
 
@@ -20,11 +17,9 @@ with open(skin_confs_file, mode='r', newline='') as file:
 skins_header = skins_content[0]
 skin_confs_header = skin_confs_content[0]
 
-# Skin confs definitions
 skin_confs_character_column = skin_confs_header.index("Character")
 skin_confs_model_column = skin_confs_header.index("Model")
 
-# Skins definitions
 skins_BlueTexture_column = skins_header.index("BlueTexture")
 skins_RedTexture_column = skins_header.index("RedTexture")
 skins_BlueSpecular_column = skins_header.index("BlueSpecular")
@@ -38,7 +33,6 @@ material = ("max_geo.scw")
 
 character_list = list(set([row[skin_confs_character_column] for i, row in enumerate(skin_confs_content) if i > 1 and row[skin_confs_character_column] != '']))
 
-# credits
 PACKAGE_VERSION = "\033[32m1.0\033[0m"
 AUTHOR = "\033[32m@molyan_ & @Daniil-SV\033[0m"
 GITHUB_LINK = "\033[32mgithub.com/Molyan3d/CsvSkinTool\033[0m"
@@ -53,17 +47,12 @@ def print_credits() -> None:
     info(GITHUB_LINK)
     info(COPYRIGHT_DESC)
 
-#print credits
 print_credits()
 
-
-# Step #: Prompt the user to input the name of the skin
 skin_name = input("Enter the name of the skin: ").upper()
 
-# Step #: Prompt the user to input a code name for the skin
 code_name = input("Enter the code name for the skin (Example: Pirate Carl -> WhirlwindPirate): ")
 
-# Step #: Prompt the user to input the name of the skin file
 skin_file_name = input("Enter the name of the skin file (Example: bo_geo.scw): ")
 
 events = [
@@ -84,25 +73,20 @@ events = [
     "Golden Skins"
 ]
 
-# Prompt the user to choose an event
 print("Choose an event:")
 for key, value in enumerate(events):
     print(f"{key}: {value}")
 event_choice = int(input("Enter the corresponding Event number: "))
 
-# If the user chooses event 7, prompt the user to input the author/s of the skin
 author = None
 if event_choice == 7:
     author = input("Enter the Author/s of the skin: ")
 
-# Prompt the user to input the texture name
 texture_name = input("Enter the texture name (Example: bo_tex.png): ")
 
-# Step #: Display the "Character" column content from "skin_confs.csv" file
 for index, character in enumerate(character_list):
     print(f"{index}: {character}")
 
-# Step #: Search for the first row containing the chosen name in "skin_confs.csv" file
 chosen_character_index = int(input("Enter the number of the chosen character: "))
 chosen_character = character_list[chosen_character_index]
 
@@ -110,16 +94,11 @@ for row in skin_confs_content:
     if row[skin_confs_character_column] == chosen_character:
         skin_confs_row = row
 
-# Step 3: Create new rows empty row
 skin_row = ["" for _ in range(len(skins_header))] # TODO
 
-#Step #: Applying values to csv row
-
-#Skin confs
 skin_confs_row[0] = skin_name
 skin_confs_row[skin_confs_model_column] = skin_file_name
 
-# Skins
 skin_row[0], skin_row[1] = (skin_name, skin_name)
 
 if event_choice:
